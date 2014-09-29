@@ -1,12 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Basico.h"
-#include "Fila.h"
-#include "Pilha.h"
 #include "Labirinto.h"
-#include "Coordenada.h"
-#include "Migalha.h"
-#include "PontoCardeal.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,11 +13,11 @@ int main(int argc, char *argv[])
 
     l = constroiLabirinto(argv[0]);
 
-    while(!l->chegou()) {
-        l->anda();
+    while(!chegou(l)) {
+        anda(l);
     }
 
-    printf(l->toString());
+    puts(toString(l));
 
     /* printar as coordenadas do caminho */
 

@@ -47,3 +47,13 @@ boolean desempilha (Pilha * p, Migalha **m) // passagem por referência
     }
     return false;
 }
+
+boolean topo (Pilha * p, Migalha **m) // passagem por referência
+{
+    if (p->topo > -1) {
+        *m = p->migalha[p->topo];
+        return true;
+    }
+    return false;
+}
+

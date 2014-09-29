@@ -1,16 +1,21 @@
+#include "Pilha.h"
+
 typedef
     struct
     {
         int linhas;
         int colunas;
-        char matriz[][];
+        char **matriz;
         Pilha * migalhas;
-        Migalha * migalha;
     }
     Labirinto;
 
-extern Labirinto * constroiLabirinto(char arquivo[]);
+extern Labirinto * constroiLabirinto(char *arquivo);
 
 extern void destroiLabirinto(Labirinto * l);
 
-extern char[] toString();
+extern char * toString();
+
+extern void anda(Labirinto * l);
+
+extern boolean chegou(Labirinto * l);
