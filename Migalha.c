@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "Migalha.h"
 
 Migalha * constroiMigalha(Coordenada posicaoAtual, Fila * dir) {
