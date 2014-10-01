@@ -3,8 +3,7 @@
 typedef
     struct
     {
-        int linhas;
-        int colunas;
+        Coordenada dimensoes;
         char **matriz;
         Pilha * migalhas;
     }

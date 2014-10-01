@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include "Basico.h"
 #include "Pilha.h"
 
 Pilha * constroiPilha (unsigned int cap) // capacidade
