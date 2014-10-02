@@ -117,6 +117,7 @@ static boolean validaEntradaSaida(char **matriz, Coordenada dim, Coordenada *ent
             {
             case 'E':
                 E++;
+                *entrada = constroiCoordenada(i, j);
                 break;
             case 'S':
                 S++;
@@ -137,7 +138,7 @@ static char **leMatriz(FILE *arquivo, Coordenada dim, Coordenada *entrada)
     for (i=0; i < dim.lin; ++i) 
     {
         matriz[i] = (char*) malloc (dim.col * sizeof(char));
-        linha = fgets(matriz[i], dim.col, arquivo);
+        linha = fgets(matriz[i], dim.col+1, arquivo);
         if (linha == NULL) 
         {
             fprintf(stderr, "Erro ao ler a linha %d do labirinto.\n", i);
@@ -214,6 +215,113 @@ void destroiLabirinto(Labirinto * l)
     free(l);
 }
 
+boolean chegou(Labirinto * l)
+{
+    Migalha *migalha = topo(l->migalhas);
+    if (migalha == NULL)
+        return false;
+    else
+        return l->matriz[migalha->posAtual.lin][migalha->posAtual.col] == 'S';
+}
+
+void anda(Labirinto * l)
+{
+    Migalha *migalha;
+    Coordenada *dir;
+    Coordenada proxPos;
+    
+    migalha = topo(l->migalhas);
+    if (migalha == NULL)
+    {
+        fprintf(stderr, "Labirinto sem saída.\n");
+        exit(1);
+    }
+
+    while (dir = proximaDirecao(&(migalha->direcoes)))
+    {
+        proxPos = somaCoordenada(migalha->posAtual, *dir);
+            
+        if (l->matriz[proxPos.lin][proxPos.col] != 'M')
+        {
+            l->matriz[migalha->posAtual.lin][migalha->posAtual.col] = '*';
+            empilha(l->migalhas, constroiMigalha(migalha->posAtual, proxPos));
+            return;
+        }
+    }
+
+    desempilha(l->migalhas);
+    destroiMigalha(migalha);
+
+    if (migalha == topo(l->migalhas) && l->matriz[migalha->posAtual.lin][migalha->posAtual.col] == '*')
+        l->matriz[migalha->posAtual.lin][migalha->posAtual.col] = ' ';
+
+    return;
+}
+
+char * labirintoToString(Labirinto * l)
+{
+    int i;
+    char *linha;
+
+    char * string = (char*) malloc (l->dimensoes.lin * (l->dimensoes.col + 1) * sizeof(char) + 1);
+
+    for (
+         i=0, linha=string;
+         i<l->dimensoes.lin;
+         ++i, linha += (l->dimensoes.col + 1)
+         )
+    {
+        sprintf(linha, "%*s\n", l->dimensoes.col, l->matriz[i]);
+    }
+
+    *linha = '\0';
+
+    return string;
+}
+
+/*
+
+
+    if (l->matriz[posicaoAtual->X][posicaoAtual->Y] == 'M') {
+        printf ('Labirinto sem saída')
+    }
+
+    //achar o caminho
+    while(l->matriz[posicaoAtual->X + frenteAtual->X][posicaoAtual->Y + frenteAtual->Y] != 'S') {
+        if (l->matriz[posicaoAtual->X + frenteAtual->X][posicaoAtual->Y + frenteAtual->Y] == ' ') {
+
+        } else if (l->matriz[posicaoAtual->X + esqAtual->X][posicaoAtual->Y + esqAtual->Y] == ' ') {
+
+        } else if (l->matriz[posicaoAtual->X + dirAtual->X][posicaoAtual->Y + dirAtual->Y] == ' ') {
+
+        } else {
+            //voltar (desempilhar, inverter frente, ...)
+        }
+    }
+
+    // FIXME
+
+    l->matriz = (char) malloc (linhas*colunas*sizeof(char));
+
+    //acabou de ler o '\n' da primeira linha
+    i = 0;
+    j = 0;
+    for(; chr != EOF; chr    = getc(arquivo), i++) {
+        for(chr = getc(arquivo); chr != '\n'; chr = getc(arquivo), j++) {
+            l->matriz[i][j] = chr;
+        }
+        j = 0;
+    }
+
+    l->linhas = i;
+    l->colunas = j;
+}
+
+char[] toString(Pilha* p)
+{
+
+}
+*/
 /*
 {
     int j = 0;
@@ -312,8 +420,4 @@ void destroiLabirinto(Labirinto * l)
     l->colunas = j;
 }
 
-char[] toString(Pilha* p)
-{
-
-}
 */

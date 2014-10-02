@@ -1,3 +1,12 @@
-.PHONY: labirinto
+.PHONY: clean labirinto
 
-labirinto: Coordenada.o Direcoes.o Labirinto.o main.o Migalha.o Pilha.o
+CC=gcc
+CFLAGS=-g
+
+labirinto: Coordenada.c Direcoes.c Labirinto.c main.c Migalha.c Pilha.c
+	$(CC) -g -o labirinto $^
+
+main.c: Labirinto.h
+
+clean:
+	rm -f *.o labirinto

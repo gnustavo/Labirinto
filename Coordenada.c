@@ -23,8 +23,7 @@ Coordenada subtraiCoordenada(Coordenada coordAtual, Coordenada coordNova)
     return c;
 }
 
-const Coordenada N = {-1,  0};
-const Coordenada S = {+1,  0};
-const Coordenada L = { 0, +1};
-const Coordenada O = { 0, -1};
-const Coordenada AQUI = { 0,  0};
+extern boolean mesmaCoordenada(Coordenada c1, Coordenada c2)
+{
+    return (c1.lin == c2.lin) && (c1.col == c2.col);
+}

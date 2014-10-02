@@ -1,3 +1,5 @@
+#include "Basico.h"
+
 typedef
     struct
     {
@@ -12,9 +14,5 @@ extern Coordenada somaCoordenada(Coordenada coordAtual, Coordenada coordNova);
 
 extern Coordenada subtraiCoordenada(Coordenada coordAtual, Coordenada coordNova);
 
-extern const Coordenada N;
-extern const Coordenada S;
-extern const Coordenada L;
-extern const Coordenada O;
-extern const Coordenada AQUI;
+extern boolean mesmaCoordenada(Coordenada c1, Coordenada c2);
 
