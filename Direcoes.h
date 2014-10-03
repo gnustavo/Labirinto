@@ -14,3 +14,5 @@ extern void constroiDirecoesDaEntrada (Direcoes * d, Coordenada entrada, Coorden
 extern void constroiDirecoes (Direcoes * d, Coordenada anterior, Coordenada atual);
 
 extern Coordenada * proximaDirecao (Direcoes * d);
+
+extern char simboloDirecao (Coordenada *c);

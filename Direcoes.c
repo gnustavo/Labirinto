@@ -47,3 +47,15 @@ extern Coordenada * proximaDirecao (Direcoes * d)
     else
         return NULL;
 }
+
+extern char simboloDirecao (Coordenada *c)
+{
+    if (c->lin == -1)
+        return '^';
+    else if (c->lin == 1)
+        return 'v';
+    else if (c->col == -1)
+        return '<';
+    else
+        return '>';
+}

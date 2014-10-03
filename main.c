@@ -1,23 +1,39 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "Labirinto.h"
 
 int main(int argc, char *argv[])
 {
     Labirinto * l;
+    int opt, usecs;
 
-    if (argc < 2) {
-        fprintf(stderr, "falta nome do arquivo\n");
-        exit(1);
+    usecs = 500000;
+    while ((opt = getopt(argc, argv, "d:")) != -1) {
+        switch (opt) {
+        case 'd':
+            usecs = atoi(optarg) * 1000;
+            break;
+        default: /* '?' */
+            fprintf(stderr, "Uso: %s [-d msecs] ARQUIVO\n",
+                    argv[0]);
+            exit(EXIT_FAILURE);
+        }
     }
 
-    l = constroiLabirinto(argv[1]);
+    if (optind >= argc) {
+        fprintf(stderr, "Falta nome do arquivo\n");
+        exit(EXIT_FAILURE);
+    }
+
+    l = constroiLabirinto(argv[optind]);
 
     while(!chegou(l)) {
         anda(l);
+        usleep(usecs);
+        system("clear");
+        puts(labirintoToString(l));
     }
-
-    puts(labirintoToString(l));
 
     /* printar as coordenadas do caminho */
 

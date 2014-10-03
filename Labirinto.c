@@ -241,19 +241,22 @@ void anda(Labirinto * l)
     {
         proxPos = somaCoordenada(migalha->posAtual, *dir);
             
-        if (l->matriz[proxPos.lin][proxPos.col] != 'M')
-        {
-            l->matriz[migalha->posAtual.lin][migalha->posAtual.col] = '*';
+        switch (l->matriz[proxPos.lin][proxPos.col]) {
+        case ' ':
+            l->matriz[proxPos.lin][proxPos.col] = '*';
+            /* falls through */
+        case 'S':
             empilha(l->migalhas, constroiMigalha(migalha->posAtual, proxPos));
             return;
+        default:
+            break;
         }
     }
 
+    l->matriz[migalha->posAtual.lin][migalha->posAtual.col] = '-';
+
     desempilha(l->migalhas);
     destroiMigalha(migalha);
-
-    if (migalha == topo(l->migalhas) && l->matriz[migalha->posAtual.lin][migalha->posAtual.col] == '*')
-        l->matriz[migalha->posAtual.lin][migalha->posAtual.col] = ' ';
 
     return;
 }
@@ -278,146 +281,3 @@ char * labirintoToString(Labirinto * l)
 
     return string;
 }
-
-/*
-
-
-    if (l->matriz[posicaoAtual->X][posicaoAtual->Y] == 'M') {
-        printf ('Labirinto sem saída')
-    }
-
-    //achar o caminho
-    while(l->matriz[posicaoAtual->X + frenteAtual->X][posicaoAtual->Y + frenteAtual->Y] != 'S') {
-        if (l->matriz[posicaoAtual->X + frenteAtual->X][posicaoAtual->Y + frenteAtual->Y] == ' ') {
-
-        } else if (l->matriz[posicaoAtual->X + esqAtual->X][posicaoAtual->Y + esqAtual->Y] == ' ') {
-
-        } else if (l->matriz[posicaoAtual->X + dirAtual->X][posicaoAtual->Y + dirAtual->Y] == ' ') {
-
-        } else {
-            //voltar (desempilhar, inverter frente, ...)
-        }
-    }
-
-    // FIXME
-
-    l->matriz = (char) malloc (linhas*colunas*sizeof(char));
-
-    //acabou de ler o '\n' da primeira linha
-    i = 0;
-    j = 0;
-    for(; chr != EOF; chr    = getc(arquivo), i++) {
-        for(chr = getc(arquivo); chr != '\n'; chr = getc(arquivo), j++) {
-            l->matriz[i][j] = chr;
-        }
-        j = 0;
-    }
-
-    l->linhas = i;
-    l->colunas = j;
-}
-
-char[] toString(Pilha* p)
-{
-
-}
-*/
-/*
-{
-    int j = 0;
-    Labirinto * l = (Labirinto*) malloc (sizeof(Labirinto));
-    char chr = getc(arquivo);
-    char lin[2] = (char*) malloc (sizeof(char)); // char *linha[2] ?
-    int linhas;
-    char col[2] = (char*) malloc (sizeof(char)); // char *coluna[2] ?
-    int colunas;
-
-    Coordenada entrada;
-    Coordenada saida;
-    Coordenada posicaoAtual;
-    Fila direcoes;
-    Migalha migalha;
-    int i = 0;
-    int j = 0;
-    PontoCardeal frenteAtual;
-    PontoCardeal esqAtual;
-    PontoCardeal dirAtual;
-
-    //achar a entrada E
-    for (;;) {
-        //primeira linha
-        if (l->matriz[i][0] == 'E') {
-            entrada = constroiCoordenada(i, 0);
-            frenteAtual = S;
-            esqAtual = L;
-            dirAtual = O;
-            break;
-        }
-        //última linha
-        if (l->matriz[i][l->colunas - 1] == 'E') {
-            entrada = constroiCoordenada(i, l->colunas - 1);
-            frenteAtual = N;
-            esqAtual = O;
-            dirAtual = L;
-            break;
-        }
-        //primeira coluna
-        if (l->matriz[0][j] == 'E') {
-            entrada = constroiCoordenada(0, j);
-            frenteAtual = L;
-            esqAtual = N;
-            dirAtual = S;
-            break;
-        }
-        //última coluna
-        if (l->matriz[l->linhas - 1][j] == 'E') {
-            entrada = constroiCoordenada(l->linhas - 1, j);
-            frenteAtual = O;
-            esqAtual = S;
-            dirAtual = N;
-            break;
-        }
-
-        i++;
-        j++;
-    }
-
-    posicaoAtual = entrada;
-    posicaoAtual = somaCoordenada(posicaoAtual, frenteAtual);
-
-    if (l->matriz[posicaoAtual->X][posicaoAtual->Y] == 'M') {
-        printf ('Labirinto sem saída')
-    }
-
-    //achar o caminho
-    while(l->matriz[posicaoAtual->X + frenteAtual->X][posicaoAtual->Y + frenteAtual->Y] != 'S') {
-        if (l->matriz[posicaoAtual->X + frenteAtual->X][posicaoAtual->Y + frenteAtual->Y] == ' ') {
-
-        } else if (l->matriz[posicaoAtual->X + esqAtual->X][posicaoAtual->Y + esqAtual->Y] == ' ') {
-
-        } else if (l->matriz[posicaoAtual->X + dirAtual->X][posicaoAtual->Y + dirAtual->Y] == ' ') {
-
-        } else {
-            //voltar (desempilhar, inverter frente, ...)
-        }
-    }
-
-    // FIXME
-
-    l->matriz = (char) malloc (linhas*colunas*sizeof(char));
-
-    //acabou de ler o '\n' da primeira linha
-    i = 0;
-    j = 0;
-    for(; chr != EOF; chr    = getc(arquivo), i++) {
-        for(chr = getc(arquivo); chr != '\n'; chr = getc(arquivo), j++) {
-            l->matriz[i][j] = chr;
-        }
-        j = 0;
-    }
-
-    l->linhas = i;
-    l->colunas = j;
-}
-
-*/
