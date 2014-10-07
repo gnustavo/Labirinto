@@ -7,8 +7,9 @@ int main(int argc, char *argv[])
 {
     Labirinto * l;
     int opt, usecs;
+    char *lab;
 
-    usecs = 500000;
+    usecs = 0;
     while ((opt = getopt(argc, argv, "d:")) != -1) {
         switch (opt) {
         case 'd':
@@ -30,10 +31,18 @@ int main(int argc, char *argv[])
 
     while(!chegou(l)) {
         anda(l);
-        usleep(usecs);
-        system("clear");
-        puts(labirintoToString(l));
+        if (usecs != 0) 
+        {
+            usleep(usecs);
+            system("clear");
+            lab = labirintoToString(l);
+            puts(lab);
+            free(lab);
+        }
     }
+
+    system("clear");
+    puts(labirintoToString(l));
 
     /* printar as coordenadas do caminho */
 

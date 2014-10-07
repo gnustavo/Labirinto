@@ -24,13 +24,13 @@ static Coordenada leDimensoes(FILE *file)
 
 static boolean validaLinha(char *linha, int tam) 
 {
-    int i;
+    int j;
     
     /* Primeira e última posição podem ser [EMS]. */
-    for (i=0; i<tam; i+=tam-1) 
+    for (j=0; j<tam; j+=tam-1) 
     /* Não entendeu como funciona a linha acima? Pergunte-me como! :-) */
     {
-        switch (linha[i]) 
+        switch (linha[j]) 
         {
         case 'E':
         case 'M':
@@ -42,9 +42,9 @@ static boolean validaLinha(char *linha, int tam)
     }
 
     /* As posições internas podem ser [ M]. */
-    for (i=1; i<tam-1; ++i) 
+    for (j=1; j<tam-1; ++j) 
     {
-        switch (linha[i]) 
+        switch (linha[j]) 
         {
         case 'M':
         case ' ':
@@ -59,7 +59,7 @@ static boolean validaLinha(char *linha, int tam)
 
 static boolean validaLinhaExtrema(char *linha, int tam) 
 {
-    int i;
+    int j;
     
     /* Primeira e última posição têm que ser [M]. */
     if (linha[0] != 'M' || linha[tam-1] != 'M')
@@ -68,9 +68,9 @@ static boolean validaLinhaExtrema(char *linha, int tam)
     }
 
     /* As posições internas podem ser [EMS]. */
-    for (i=1; i<tam-1; ++i) 
+    for (j=1; j<tam-1; ++j) 
     {
-        switch (linha[i]) 
+        switch (linha[j]) 
         {
         case 'E':
         case 'M':
@@ -137,22 +137,26 @@ static char **leMatriz(FILE *arquivo, Coordenada dim, Coordenada *entrada)
 
     for (i=0; i < dim.lin; ++i) 
     {
-        matriz[i] = (char*) malloc (dim.col * sizeof(char));
+        matriz[i] = (char*) malloc ((dim.col+1) * sizeof(char));
         linha = fgets(matriz[i], dim.col+1, arquivo);
         if (linha == NULL) 
         {
             fprintf(stderr, "Erro ao ler a linha %d do labirinto.\n", i);
             exit(1);
         }
-        if (!validaLinha(linha, dim.col)) 
-        {
-            fprintf(stderr, "Erro de sintaxe na linha %d do labirinto.\n", i);
-            exit(1);
-        }
         newline = fgetc(arquivo);
         if (newline != EOF && newline != '\n')
         {
             fprintf(stderr, "A linha %d é maior do que o especificado.\n", i);
+            exit(1);
+        }
+    }
+
+    for (i=1; i < dim.lin-1; ++i) 
+    {
+        if (!validaLinha(matriz[i], dim.col)) 
+        {
+            fprintf(stderr, "Erro de sintaxe na linha %d do labirinto.\n", i);
             exit(1);
         }
     }
